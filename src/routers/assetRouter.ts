@@ -2,6 +2,7 @@ import { Router } from "express"
 
 import {
   deleteAsset,
+  getAllUnitAssets,
   registerAsset,
   updateAsset,
 } from "../controllers/assetController"
@@ -10,6 +11,8 @@ import { validateToken } from "../middlewares/validateToken"
 import { assetSchema } from "../schemas/assetSchemas"
 
 export const assetRouter = Router()
+
+assetRouter.get("/assets/:unitId", validateToken, getAllUnitAssets)
 
 assetRouter.post(
   "/assets/create/:unitId",

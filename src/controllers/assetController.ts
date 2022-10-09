@@ -2,6 +2,16 @@ import { Request, Response } from "express"
 
 import * as assetService from "@services/assetService"
 
+export async function getAllUnitAssets(req: Request, res: Response) {
+  const { unitId } = req.params
+
+  const { email: userEmail }: { email: string } = res.locals.user
+
+  const assets = await assetService.getAllUnitAssets(userEmail, unitId)
+
+  res.send(assets)
+}
+
 export async function registerAsset(req: Request, res: Response) {
   const { email: userEmail }: { email: string } = res.locals.user
   const { unitId } = req.params

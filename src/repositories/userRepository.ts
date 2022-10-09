@@ -14,7 +14,9 @@ function findByEmail(email: string) {
 }
 
 function findByEmailPopulateCompany(email: string) {
-  return User.findOne({ email: email }).populate("company")
+  return User.findOne({ email: email }).populate<{
+    company: CreateCompanyData
+  }>("company")
 }
 
 function register({ email, password }: CreateUserData) {

@@ -9,6 +9,26 @@ import {
   unauthorizedError,
 } from "../utils/errorUtils"
 
+export async function getAllUnitAssets(userEmail: string, unitId: string) {
+  const user = await userRepository.findByEmail(userEmail)
+
+  const unit = await unitRepository.findById(unitId)
+
+  if (!unit) {
+    throw notFoundError("The provided unit does not exist")
+  }
+
+  if (!user.company || unit?.company.toString() !== user?.company.toString()) {
+    throw conflictError(
+      "The user must be part of the company to which the unit belongs",
+    )
+  }
+
+  const assets = await assetRepository.getAllByUnitId(unitId)
+
+  return assets
+}
+
 export async function registerAsset(
   userEmail: string,
   unitId: string,

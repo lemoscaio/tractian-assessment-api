@@ -2,6 +2,14 @@ import { unitRepository } from "../repositories/unitRepository"
 import { userRepository } from "../repositories/userRepository"
 import { conflictError } from "../utils/errorUtils"
 
+export async function getAllUnits(userEmail: string) {
+  const user = await userRepository.findByEmail(userEmail)
+
+  const units = await unitRepository.findByCompanyId(user.company._id)
+
+  return units
+}
+
 export async function registerUnit(userEmail: string, unitName: string) {
   const user = await userRepository.findByEmail(userEmail)
 
