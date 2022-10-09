@@ -7,7 +7,7 @@ export async function registerCompany(userEmail: string, name: string) {
   const userHasCompany = await userRepository.findByEmail(userEmail)
 
   if (userHasCompany.company) {
-    throw conflictError("This user already has a company")
+    throw conflictError("This user already has a company.")
   }
 
   if (companyExists)
@@ -31,6 +31,8 @@ export async function addUserToCompany(
   if (!userHasCompany.company) {
     throw conflictError("You must be part of a company to add a user to it.")
   }
+
+  //TODO verify if user exists
 
   const userWithAddedCompany = await userRepository.addCompany(
     newUserEmail,

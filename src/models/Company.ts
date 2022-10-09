@@ -1,9 +1,9 @@
 import mongoose from "mongoose"
-import { User } from "./User"
+import { CreateCompanyData } from "../interfaces/companyInterfaces"
 
-const CompanySchema = new mongoose.Schema(
+const CompanySchema = new mongoose.Schema<CreateCompanyData>(
   {
-    name: String,
+    name: { type: String, required: true, trim: true, unique: true },
   },
   { timestamps: true },
 )

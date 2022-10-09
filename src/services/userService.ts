@@ -27,7 +27,7 @@ export async function loginUser({ email, password }: CreateUserData) {
   )
 
   if (!foundUser || !passwordMatch)
-    throw unauthorizedError("Wrong e-mail or password")
+    throw unauthorizedError("Wrong e-mail or password.")
 
   const token = jwt.sign({ email: foundUser.email }, JWT_TOKEN)
 

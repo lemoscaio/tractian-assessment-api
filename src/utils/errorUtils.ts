@@ -13,6 +13,7 @@ export function errorTypeToStatusCode(errorType: string) {
     notFound: 404,
     conflict: 409,
     wrongSchema: 422,
+    internalServerError: 500,
   }
 
   return types[errorType] || 400
@@ -29,4 +30,7 @@ export function conflictError(message?: string) {
 }
 export function wrongSchemaError(message?: string) {
   return { type: "wrongSchema", message }
+}
+export function internalServerError(message?: string) {
+  return { type: "internalServerError", message }
 }

@@ -4,7 +4,7 @@ import * as companyService from "@services/companyService"
 
 export async function registerCompany(req: Request, res: Response) {
   const { name }: { name: string } = req.body
-  const { email: userEmail } = res.locals.user
+  const { email: userEmail }: { email: string } = res.locals.user
 
   const createdCompany = await companyService.registerCompany(userEmail, name)
 

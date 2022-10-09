@@ -1,13 +1,24 @@
-import mongoose from "mongoose"
+import mongoose, { Schema } from "mongoose"
 
-const AssetSchema = new mongoose.Schema({
-  image: String,
-  name: String,
-  description: String,
-  model: String,
-  owner: String,
-  status: String,
-  healthLevel: Number,
-})
+import { Asset as AssetInterface } from "@interfaces/assetInterfaces"
 
-export const Asset = mongoose.model("Asset", AssetSchema)
+const AssetSchema = new mongoose.Schema<AssetInterface>(
+  {
+    image: { type: String, require: true, trim: true },
+    name: { type: String, require: true, trim: true },
+    description: { type: String, require: true, trim: true },
+    model: { type: String, require: true, trim: true },
+    owner: { type: String, require: true, trim: true },
+    status: {
+      type: String,
+      require: true,
+      trim: true,
+      enum: ["Running", "Alerting", "Stopped"],
+    },
+    healthLevel: { type: Number, require: true, min: 0, max: 100 },
+    unit: { type: Schema.Types.ObjectId, ref: "Unit" },
+  },
+  { timestamps: true },
+)
+
+export const Asset = mongoose.model<AssetInterface>("Asset", AssetSchema)
