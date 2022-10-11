@@ -1,6 +1,16 @@
 import { companyRepository } from "../repositories/companyRepository"
 import { userRepository } from "../repositories/userRepository"
-import { conflictError } from "../utils/errorUtils"
+import {
+  conflictError,
+  notFoundError,
+  unauthorizedError,
+} from "../utils/errorUtils"
+
+export async function getAllUsersOfCompany(companyId: string) {
+  const users = await companyRepository.getAllUsers(companyId)
+
+  return users
+}
 
 export async function registerCompany(userEmail: string, name: string) {
   const companyExists = await companyRepository.findByName(name)
@@ -26,17 +36,21 @@ export async function addUserToCompany(
   userEmail: string,
   newUserEmail: string,
 ) {
-  const userHasCompany = await userRepository.findByEmail(userEmail)
+  const user = await userRepository.findByEmailPopulateCompany(userEmail)
 
-  if (!userHasCompany.company) {
-    throw conflictError("You must be part of a company to add a user to it.")
+  if (!user) {
+    throw notFoundError("The provided user does not exists")
   }
 
-  //TODO verify if user exists
+  if (!user.company) {
+    throw unauthorizedError(
+      "You must be part of a company to add a user to it.",
+    )
+  }
 
   const userWithAddedCompany = await userRepository.addCompany(
     newUserEmail,
-    userHasCompany.company,
+    user.company,
   )
 
   return userWithAddedCompany

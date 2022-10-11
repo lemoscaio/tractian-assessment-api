@@ -104,13 +104,11 @@ export async function deleteAsset(userEmail: string, assetId: string) {
 
   const deletedContent = await assetRepository.remove(assetId)
 
-  if (deletedContent.deletedCount === 1) {
+  if (deletedContent.deletedCount === 0) {
     throw internalServerError(
       "Something went wrong. The asset couldn't be deleted.",
     )
   }
-
-  console.log(deletedContent)
 
   return deletedContent
 }

@@ -2,6 +2,14 @@ import { Request, Response } from "express"
 
 import * as companyService from "@services/companyService"
 
+export async function getAllUsersOfCompany(req: Request, res: Response) {
+  const { companyId } = req.params
+
+  const users = await companyService.getAllUsersOfCompany(companyId)
+
+  res.send(users)
+}
+
 export async function registerCompany(req: Request, res: Response) {
   const { name }: { name: string } = req.body
   const { email: userEmail }: { email: string } = res.locals.user
